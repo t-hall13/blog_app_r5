@@ -43,6 +43,22 @@ RSpec.describe "Articles", type: :request do
     end
   end
   
+  describe 'DELETE/articles/:id/' do
+   
+    context 'with signed in user as owner successful delete' do
+      before do
+        login_as(@john)
+        delete "/articles/#{@article.id}/"
+      end
+      
+      it "successfully deletes article" do
+        expect(response.status).to eq 302
+        flash_message = "Article has been deleted"
+        expect(flash[:success]).to eq flash_message
+      end
+    end
+  end
+  
   describe 'GET/articles/:id' do
     context 'with existing article' do
       before { get "/articles/#{@article.id}" }
